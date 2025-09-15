@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+    app:
+        build: .
+        ports:
+            - "3000:3000"
+        environment:
+            - DATABASE_URL=postgresql://projetos_user:projetos_pass@db:5432/projetos_db
+        depends_on:
+            - db
+        volumes:
+            - .:/app
+            - /app/node_modules
+        
+    db:
+        image: postgres:15-alpine
+        environment:
+            POSTGRES_USER: projetos_user
+            POSTGRES_PASSWORD: projetos_pass
+            POSTGRES_DB: projetos_db
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        
+volumes:
+    postgres_data:
